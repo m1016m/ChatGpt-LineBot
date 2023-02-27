@@ -10,7 +10,7 @@ import os
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 line_handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 working_status = os.getenv("DEFALUT_TALKING", default = "true").lower() == "true"
-LIFF_URL = 'https://liff.line.me/1656861539-zMbLLkRG'
+LIFF_URL = 'https://liff.line.me/1660673627-bwvxxAzm'
 web_url = 'https://chat.openai.com/chat'
 
 app = Flask(__name__)
