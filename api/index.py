@@ -70,18 +70,20 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=reply_msg))
         
-    if event.message.text == "Chat":
-        message = TemplateSendMessage(
-                alt_text='',
-                template=ButtonsTemplate(
-                    text='🌸🌸 我想使用ChatGPT 🌸🌸',
-                    thumbnail_image_url='https://i.imgur.com/2rt3YMq.png',
-                    actions=[
-                        URIAction(label='ChatGPT',
-                                uri=LIFF_URL)
-                    ]))
+    print("event.reply_token:", event.reply_token)
+    print("event.message.text:", event.message.text)
+   
+    message = TemplateSendMessage(
+            alt_text='使用ChatGPT',
+            template=ButtonsTemplate(
+                text='🌸🌸 我想使用ChatGPT 🌸🌸',
+                thumbnail_image_url='https://i.imgur.com/2rt3YMq.png',
+                actions=[
+                    URIAction(label='ChatGPT',
+                              uri=LIFF_URL)
+                ]))
 
-        line_bot_api.reply_message(event.reply_token, [message])
+    line_bot_api.reply_message(event.reply_token, [message])
     
 
 if __name__ == "__main__":
