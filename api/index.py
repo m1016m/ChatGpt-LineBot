@@ -3,16 +3,24 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from api.chatgpt import ChatGPT
-
+from flask import Flask, request, abort ,redirect
+from linebot.models import *
 import os
 
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 line_handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 working_status = os.getenv("DEFALUT_TALKING", default = "true").lower() == "true"
+LIFF_URL = 'https://liff.line.me/1656861539-zMbLLkRG'
+web_url = 'https://chat.openai.com/chat'
 
 app = Flask(__name__)
 chatgpt = ChatGPT()
 
+@app.route("/liff", methods=['GET'])
+def liff():
+    redirect_url = request.args.get('redirect_url')
+
+    return redirect(redirect_url)
 # domain root
 @app.route('/')
 def home():
@@ -61,7 +69,20 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=reply_msg))
+        
+    if event.message.text == "Chat":
+        message = TemplateSendMessage(
+                alt_text='',
+                template=ButtonsTemplate(
+                    text='🌸🌸 我想使用ChatGPT 🌸🌸',
+                    thumbnail_image_url='https://i.imgur.com/2rt3YMq.png',
+                    actions=[
+                        URIAction(label='ChatGPT',
+                                uri=LIFF_URL)
+                    ]))
 
+        line_bot_api.reply_message(event.reply_token, [message])
+    
 
 if __name__ == "__main__":
     app.run()
